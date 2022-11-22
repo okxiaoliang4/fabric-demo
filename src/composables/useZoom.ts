@@ -1,13 +1,8 @@
-import type { MaybeRef } from "@vueuse/core"
 import { IEvent } from "fabric/fabric-impl"
-import { ref, unref, watchEffect } from "vue"
+import { ref } from "vue"
 
-export function useZoom(canvas: MaybeRef<fabric.Canvas | undefined>, initinalZoom = 1) {
-  const zoom = ref(unref(canvas)?.getZoom() || initinalZoom)
-
-  watchEffect(() => {
-    unref(canvas)?.setZoom(zoom.value)
-  })
+export function useZoom(initinalZoom = 1) {
+  const zoom = ref(initinalZoom)
 
   function onMousewheel(opt: IEvent<WheelEvent>) {
     const delta = opt.e.deltaY;
