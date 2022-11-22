@@ -57,7 +57,7 @@ const fabricCanvas = ref<InstanceType<typeof FabricCanvas>>()
 const {
   zoom,
   onMousewheel
-} = useZoom(fabricCanvas.value?.instance)
+} = useZoom()
 
 function toJSON() {
   // console.log(canvas.value?.toJSON());
