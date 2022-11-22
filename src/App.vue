@@ -3,12 +3,14 @@
 // import { fabric } from 'fabric';
 // import { useMagicKeys } from '@vueuse/core'
 // import { useFabricCopyPaste } from './composables/useFabricCopyPaste';
+import { ref } from 'vue';
 import FabricCanvas from './components/FabricCanvas';
 import FabricRect from './components/FabricRect';
 import FabricText from './components/FabricText';
+import { useZoom } from './composables/useZoom';
 // import { useZoom } from './composables/useZoom';
 
-// // const fabricCanvas = ref<InstanceType<typeof FabricCanvas>>()
+const fabricCanvas = ref<InstanceType<typeof FabricCanvas>>()
 
 
 // // fabricCanvas.value?.fCanvas
@@ -52,23 +54,24 @@ import FabricText from './components/FabricText';
 
 // })
 
-// function onMousewheel(opt: any) {
-//   const delta = opt.e.deltaY;
-//   zoom.value *= 0.999 ** delta;
-//   if (zoom.value > 20) zoom.value = 20;
-//   if (zoom.value < 0.01) zoom.value = 0.01;
-//   opt.e.preventDefault();
-//   opt.e.stopPropagation();
-// }
+const {
+  zoom,
+  onMousewheel
+} = useZoom(fabricCanvas.value?.instance)
 
 function toJSON() {
   // console.log(canvas.value?.toJSON());
   // canvas.value?.loadFromJSON()
 }
+
 </script>
 
 <template>
-  <FabricCanvas ref="fabricCanvas">
+  <FabricCanvas
+    :zoom="zoom"
+    @mousewheel="onMousewheel"
+    ref="fabricCanvas"
+  >
     <FabricText></FabricText>
     <FabricRect></FabricRect>
   </FabricCanvas>

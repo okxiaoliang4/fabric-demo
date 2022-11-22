@@ -1,6 +1,7 @@
 import { useWindowSize } from '@vueuse/core';
 import { fabric } from 'fabric';
-import { defineComponent, provide, onMounted, PropType, ref, shallowRef, onUpdated, watchEffect } from 'vue';
+import { IEvent } from 'fabric/fabric-impl';
+import { defineComponent, provide, onMounted, PropType, ref, shallowRef, onUpdated, watchEffect, useAttrs } from 'vue';
 
 export const FABRIC_CANVAS_SYMBOL = Symbol('fabric-canvas');
 
@@ -11,7 +12,10 @@ export default defineComponent({
       type: Number as PropType<number>,
     }
   },
-  setup(props) {
+  emits: {
+    'mousewheel': (event: IEvent<WheelEvent>) => true,
+  },
+  setup(props, ctx) {
     const instance = shallowRef<fabric.Canvas>()
     const canvasEl = ref<HTMLCanvasElement>()
 
@@ -19,12 +23,17 @@ export default defineComponent({
 
     onMounted(() => {
       instance.value = new fabric.Canvas(canvasEl.value!)
+      instance.value.on('mouse:wheel', (e) => ctx.emit('mousewheel', e))
     })
 
     const { width, height } = useWindowSize()
     watchEffect(() => {
       instance.value?.setHeight(height.value)
       instance.value?.setWidth(width.value)
+    })
+
+    watchEffect(() => {
+      typeof props.zoom === 'number' && instance.value?.setZoom(props.zoom)
     })
 
     return {
