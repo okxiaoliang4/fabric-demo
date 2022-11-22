@@ -1,6 +1,8 @@
 import { useWindowSize } from '@vueuse/core';
 import { fabric } from 'fabric';
-import { defineComponent, onMounted, PropType, ref, shallowRef, useAttrs, watchEffect } from 'vue';
+import { defineComponent, provide, onMounted, PropType, ref, shallowRef, onUpdated, watchEffect } from 'vue';
+
+export const FABRIC_CANVAS_SYMBOL = Symbol('fabric-canvas');
 
 export default defineComponent({
   name: 'FabricCanvas',
@@ -10,16 +12,23 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const instance = shallowRef()
+    const instance = shallowRef<fabric.Canvas>()
     const canvasEl = ref<HTMLCanvasElement>()
+
+    provide(FABRIC_CANVAS_SYMBOL, instance)
 
     onMounted(() => {
       instance.value = new fabric.Canvas(canvasEl.value!)
     })
 
     const { width, height } = useWindowSize()
+    watchEffect(() => {
+      instance.value?.setHeight(height.value)
+      instance.value?.setWidth(width.value)
+    })
 
     return {
+      canvasEl,
       instance,
       width,
       height,
@@ -34,7 +43,7 @@ export default defineComponent({
           height={this.height}
         >
         </canvas>
-        { this.$slots.default?.() }
+        {this.$slots.default?.()}
       </>
     )
   }

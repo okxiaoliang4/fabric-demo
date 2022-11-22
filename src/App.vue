@@ -4,6 +4,7 @@
 // import { useMagicKeys } from '@vueuse/core'
 // import { useFabricCopyPaste } from './composables/useFabricCopyPaste';
 import FabricCanvas from './components/FabricCanvas';
+import FabricText from './components/FabricText';
 // import { useZoom } from './composables/useZoom';
 
 // // const fabricCanvas = ref<InstanceType<typeof FabricCanvas>>()
@@ -67,7 +68,7 @@ function toJSON() {
 
 <template>
   <FabricCanvas ref="fabricCanvas">
-    123
+    <FabricText></FabricText>
   </FabricCanvas>
   <button
     @click="toJSON"
