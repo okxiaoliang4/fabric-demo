@@ -3,13 +3,15 @@ import { defineComponent, inject, nextTick, onMounted, onUnmounted, provide, Ref
 import { FABRIC_CANVAS_SYMBOL } from './FabricCanvas';
 
 export default defineComponent({
-  name: 'FabricText',
+  name: 'FabricRect',
   setup() {
-    const instance = shallowRef() as ShallowRef<fabric.Text>
-    instance.value = new fabric.Textbox("哈哈", {
-      fontFamily: 'Comic Sans',
+    const instance = shallowRef() as ShallowRef<fabric.Rect>
+    instance.value = new fabric.Rect({
+      width: 100,
+      height: 100,
+      fill: 'red',
     });
-
+    
     const fabricCanvas = inject<Ref<fabric.Canvas>>(FABRIC_CANVAS_SYMBOL)
     onMounted(() => {
       nextTick(() => {
