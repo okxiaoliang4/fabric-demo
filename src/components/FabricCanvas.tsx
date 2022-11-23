@@ -1,7 +1,7 @@
 import { useMagicKeys, useWindowSize } from '@vueuse/core';
 import { fabric } from 'fabric';
 import { IEvent } from 'fabric/fabric-impl';
-import { defineComponent, provide, onMounted, PropType, ref, shallowRef, watchEffect } from 'vue';
+import { defineComponent, provide, onMounted, PropType, ref, watchEffect } from 'vue';
 import { useFabricCopyPaste } from '../composables/useFabricCopyPaste';
 
 export const FABRIC_CANVAS_SYMBOL = Symbol('fabric-canvas');
@@ -73,48 +73,3 @@ export default defineComponent({
     )
   }
 })
-
-
-
-{/* <script lang="ts" setup>
-import { useWindowSize } from '@vueuse/core';
-import { fabric } from 'fabric';
-import type { IEvent } from 'fabric/fabric-impl';
-import { onMounted, ref, shallowRef, useAttrs, watchEffect } from 'vue';
-
-const canvasEl = ref<HTMLCanvasElement>()
-
-const fCanvas = shallowRef<fabric.Canvas>()
-
-const { width, height } = useWindowSize()
-
-const attrs = useAttrs()
-
-onMounted(() => {
-  fCanvas.value = new fabric.Canvas(canvasEl.value!, {
-    backgroundColor: '#eee'
-  })
-
-  if (attrs.onMousewheel) {
-    fCanvas.value.on('mouse:wheel', attrs.onMousewheel as (e: IEvent<WheelEvent>) => void)
-  }
-})
-
-watchEffect(() => {
-  fCanvas.value?.setHeight(height.value)
-  fCanvas.value?.setWidth(width.value)
-})
-
-defineExpose({
-  fCanvas,
-})
-</script>
-
-<template>
-  <canvas
-    ref="canvasEl"
-    :width="width"
-    :height="height"
-  >
-  </canvas>
-</template> */}
