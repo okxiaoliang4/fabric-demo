@@ -18,7 +18,7 @@ function toJSON() {
   // console.log(canvas.value?.toJSON());
   // canvas.value?.loadFromJSON()
 }
-
+const text = ref('123')
 </script>
 
 <template>
@@ -32,13 +32,13 @@ function toJSON() {
     <aside></aside>
     <main>
       <FabricCanvas
+        ref="fabricCanvas"
         class="canvasWrap"
         :zoom="zoom"
         @mousewheel="onMousewheel"
-        ref="fabricCanvas"
       >
         <FabricRect></FabricRect>
-        <FabricText></FabricText>
+        <FabricText v-model="text"></FabricText>
       </FabricCanvas>
     </main>
     <section class="setup"></section>

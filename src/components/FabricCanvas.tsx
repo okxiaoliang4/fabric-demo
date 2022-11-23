@@ -1,7 +1,7 @@
 import { useCurrentElement, useDebounceFn, useElementSize, useMagicKeys, useThrottleFn } from '@vueuse/core';
 import { fabric } from 'fabric';
 import { IEvent } from 'fabric/fabric-impl';
-import { defineComponent, provide, onMounted, PropType, ref, watchEffect, watch } from 'vue';
+import { defineComponent, provide, onMounted, PropType, ref, watchEffect, watch, onUpdated } from 'vue';
 import { useFabricCopyPaste } from '../composables/useFabricCopyPaste';
 
 export const FABRIC_CANVAS_SYMBOL = Symbol('fabric-canvas');
@@ -51,6 +51,11 @@ export default defineComponent({
       if (command_v.value) {
         handlePaste()
       }
+    })
+
+    onUpdated(() => { 
+      console.info('fabric canvas: rerender');
+      instance.renderAll()
     })
 
     return {
