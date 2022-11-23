@@ -28,7 +28,7 @@ function toJSON() {
       class="to_json"
     >toJSON</button>
   </header>
-  <div>
+  <section class="container">
     <aside></aside>
     <main>
       <FabricCanvas
@@ -37,29 +37,47 @@ function toJSON() {
         @mousewheel="onMousewheel"
         ref="fabricCanvas"
       >
-        <FabricText></FabricText>
         <FabricRect></FabricRect>
+        <FabricText></FabricText>
       </FabricCanvas>
     </main>
-    <aside></aside>
-  </div>
+    <section class="setup"></section>
+  </section>
 
 </template>
 
 <style>
 #app {
+  display: flex;
+  flex-flow: column;
   width: 100vw;
   height: 100vh;
 }
 
 .canvasWrap {
-  width: 50vw;
-  height: 100vh;
+  height: 100%;
+  width: 500px;
+  margin: 0 auto;
+  background-color: #fff;
 }
 
-.to_json {
-  position: absolute;
-  top: 0;
-  left: 0;
+.container {
+  display: flex;
+  flex: 1;
+}
+
+aside {
+  width: 200px;
+  background-color: #fff;
+}
+
+main {
+  padding: 20px;
+  flex: 1;
+  background-color: #eee;
+}
+
+.setup {
+  width: 200px;
 }
 </style>
