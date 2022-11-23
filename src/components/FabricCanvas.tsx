@@ -1,7 +1,7 @@
-import { useMagicKeys, useWindowSize } from '@vueuse/core';
+import { useCurrentElement, useDebounceFn, useElementSize, useMagicKeys, useThrottleFn } from '@vueuse/core';
 import { fabric } from 'fabric';
 import { IEvent } from 'fabric/fabric-impl';
-import { defineComponent, provide, onMounted, PropType, ref, watchEffect } from 'vue';
+import { defineComponent, provide, onMounted, PropType, ref, watchEffect, watch } from 'vue';
 import { useFabricCopyPaste } from '../composables/useFabricCopyPaste';
 
 export const FABRIC_CANVAS_SYMBOL = Symbol('fabric-canvas');
@@ -18,6 +18,7 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const instance = new fabric.Canvas(null)
+    const currentEl = useCurrentElement<HTMLDivElement>()
     const canvasEl = ref<HTMLCanvasElement>()
 
     // 注入fabric canvas实例
@@ -29,11 +30,11 @@ export default defineComponent({
       instance.on('mouse:wheel', (e) => ctx.emit('mousewheel', e))
     })
 
-    const { width, height } = useWindowSize()
-    watchEffect(() => {
-      instance.setHeight(height.value)
-      instance.setWidth(width.value)
-    })
+    const { width, height } = useElementSize(currentEl)
+
+    watch([width, height], useDebounceFn(() => {
+      instance.setDimensions({ width: width.value, height: height.value })
+    }, 500, { maxWait: 5000 }))
 
     // 更新zoom属性
     watchEffect(() => {
@@ -61,15 +62,11 @@ export default defineComponent({
   },
   render() {
     return (
-      <>
-        <canvas
-          ref="canvasEl"
-          width={this.width}
-          height={this.height}
-        >
+      <div>
+        <canvas ref="canvasEl">
         </canvas>
         {this.$slots.default?.()}
-      </>
+      </div>
     )
   }
 })

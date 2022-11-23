@@ -14,7 +14,7 @@ const {
 
 function toJSON() {
   console.log(fabricCanvas.value?.instance.toDatalessJSON());
-  
+
   // console.log(canvas.value?.toJSON());
   // canvas.value?.loadFromJSON()
 }
@@ -22,21 +22,41 @@ function toJSON() {
 </script>
 
 <template>
-  <FabricCanvas
-    :zoom="zoom"
-    @mousewheel="onMousewheel"
-    ref="fabricCanvas"
-  >
-    <FabricText></FabricText>
-    <FabricRect></FabricRect>
-  </FabricCanvas>
-  <button
-    @click="toJSON"
-    class="to_json"
-  >toJSON</button>
+  <header>
+    <button
+      @click="toJSON"
+      class="to_json"
+    >toJSON</button>
+  </header>
+  <div>
+    <aside></aside>
+    <main>
+      <FabricCanvas
+        class="canvasWrap"
+        :zoom="zoom"
+        @mousewheel="onMousewheel"
+        ref="fabricCanvas"
+      >
+        <FabricText></FabricText>
+        <FabricRect></FabricRect>
+      </FabricCanvas>
+    </main>
+    <aside></aside>
+  </div>
+
 </template>
 
 <style>
+#app {
+  width: 100vw;
+  height: 100vh;
+}
+
+.canvasWrap {
+  width: 50vw;
+  height: 100vh;
+}
+
 .to_json {
   position: absolute;
   top: 0;
