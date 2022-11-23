@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import FabricCanvas from './components/FabricCanvas';
+import FabricImage from './components/FabricImage';
 import FabricRect from './components/FabricRect';
 import FabricText from './components/FabricText';
 import { useZoom } from './composables/useZoom';
@@ -39,6 +40,7 @@ const text = ref('123')
       >
         <FabricRect></FabricRect>
         <FabricText v-model="text"></FabricText>
+        <FabricImage src="https://place.dog/300/200"></FabricImage>
       </FabricCanvas>
     </main>
     <section class="setup"></section>
