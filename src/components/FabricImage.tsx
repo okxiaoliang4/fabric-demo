@@ -16,20 +16,21 @@ export default defineComponent({
   setup(props) {
     const instance = shallowRef() as ShallowRef<fabric.Image>
 
+    const fabricCanvas = inject(FABRIC_CANVAS_SYMBOL)
+
     fabric.Image.fromURL(props.src, (result) => {
       instance.value = result
-      fabricCanvas.add(instance.value)
+      fabricCanvas?.value.add(instance.value)
     });
 
-    const fabricCanvas = inject(FABRIC_CANVAS_SYMBOL) as fabric.Canvas
     // onMounted(() => {
     //   nextTick(() => {
-    //     fabricCanvas.add(instance.value)
+    //     fabricCanvas?.value.add(instance.value)
     //   })
     // })
 
     onUnmounted(() => {
-      fabricCanvas.remove(instance.value)
+      fabricCanvas?.value.remove(instance.value)
     })
 
     return {

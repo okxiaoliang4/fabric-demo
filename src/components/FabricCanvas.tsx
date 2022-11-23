@@ -1,10 +1,10 @@
 import { useCurrentElement, useDebounceFn, useElementSize, useMagicKeys, useThrottleFn } from '@vueuse/core';
 import { fabric } from 'fabric';
 import { IEvent } from 'fabric/fabric-impl';
-import { defineComponent, provide, onMounted, PropType, ref, watchEffect, watch, onUpdated } from 'vue';
+import { defineComponent, provide, onMounted, PropType, ref, watchEffect, watch, onUpdated, shallowRef, InjectionKey, ShallowRef } from 'vue';
 import { useFabricCopyPaste } from '../composables/useFabricCopyPaste';
 
-export const FABRIC_CANVAS_SYMBOL = Symbol('fabric-canvas');
+export const FABRIC_CANVAS_SYMBOL = Symbol('fabric-canvas') as InjectionKey<ShallowRef<fabric.Canvas>>;
 
 export default defineComponent({
   name: 'FabricCanvas',
@@ -17,7 +17,7 @@ export default defineComponent({
     'mousewheel': (event: IEvent<WheelEvent>) => true,
   },
   setup(props, ctx) {
-    const instance = new fabric.Canvas(null)
+    const instance = shallowRef(new fabric.Canvas(null))
     const currentEl = useCurrentElement<HTMLDivElement>()
     const canvasEl = ref<HTMLCanvasElement>()
 
@@ -26,19 +26,19 @@ export default defineComponent({
 
     // 初始化实例
     onMounted(() => {
-      instance.initialize(canvasEl.value!)
-      instance.on('mouse:wheel', (e) => ctx.emit('mousewheel', e))
+      instance.value.initialize(canvasEl.value!)
+      instance.value.on('mouse:wheel', (e) => ctx.emit('mousewheel', e))
     })
 
     const { width, height } = useElementSize(currentEl)
 
     watch([width, height], useDebounceFn(() => {
-      instance.setDimensions({ width: width.value, height: height.value })
+      instance.value.setDimensions({ width: width.value, height: height.value })
     }, 500, { maxWait: 5000 }))
 
     // 更新zoom属性
     watchEffect(() => {
-      typeof props.zoom === 'number' && instance.setZoom(props.zoom)
+      typeof props.zoom === 'number' && instance.value.setZoom(props.zoom)
     })
 
     // 复制粘贴
@@ -53,9 +53,9 @@ export default defineComponent({
       }
     })
 
-    onUpdated(() => { 
+    onUpdated(() => {
       console.info('fabric canvas: rerender');
-      instance.renderAll()
+      instance.value.renderAll()
     })
 
     return {

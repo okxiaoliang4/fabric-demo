@@ -24,14 +24,14 @@ export default defineComponent({
     });
 
     // add & remove
-    const fabricCanvas = inject(FABRIC_CANVAS_SYMBOL) as fabric.Canvas
+    const fabricCanvas = inject(FABRIC_CANVAS_SYMBOL)
     onMounted(() => {
       nextTick(() => {
-        fabricCanvas.add(instance.value)
+        fabricCanvas?.value.add(instance.value)
       })
     })
     onUnmounted(() => {
-      fabricCanvas.remove(instance.value)
+      fabricCanvas?.value.remove(instance.value)
     })
 
     // binding modelValue
