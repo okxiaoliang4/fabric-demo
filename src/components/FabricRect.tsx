@@ -1,9 +1,11 @@
 import { fabric } from 'fabric';
 import { defineComponent, inject, nextTick, onMounted, onUnmounted, provide, Ref, ShallowRef, shallowRef } from 'vue';
 import { FABRIC_CANVAS_SYMBOL } from './FabricCanvas';
+import FabricObject from './FabricObject';
 
 export default defineComponent({
   name: 'FabricRect',
+  extends: FabricObject,
   setup() {
     const instance = shallowRef() as ShallowRef<fabric.Rect>
     instance.value = new fabric.Rect({
@@ -12,15 +14,15 @@ export default defineComponent({
       fill: 'red',
     });
     
-    const fabricCanvas = inject<Ref<fabric.Canvas>>(FABRIC_CANVAS_SYMBOL)
+    const fabricCanvas = inject(FABRIC_CANVAS_SYMBOL) as fabric.Canvas
     onMounted(() => {
       nextTick(() => {
-        fabricCanvas!.value.add(instance.value)
+        fabricCanvas.add(instance.value)
       })
     })
 
     onUnmounted(() => {
-      fabricCanvas!.value.remove(instance.value)
+      fabricCanvas.remove(instance.value)
     })
 
     return {

@@ -10,15 +10,16 @@ export default defineComponent({
       fontFamily: 'Comic Sans',
     });
 
-    const fabricCanvas = inject<Ref<fabric.Canvas>>(FABRIC_CANVAS_SYMBOL)
+    const fabricCanvas = inject(FABRIC_CANVAS_SYMBOL) as fabric.Canvas
+
     onMounted(() => {
       nextTick(() => {
-        fabricCanvas!.value.add(instance.value)
+        fabricCanvas.add(instance.value)
       })
     })
 
     onUnmounted(() => {
-      fabricCanvas!.value.remove(instance.value)
+      fabricCanvas.remove(instance.value)
     })
 
     return {
