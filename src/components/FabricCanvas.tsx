@@ -41,14 +41,14 @@ export default defineComponent({
     })
 
     // 复制粘贴
-    const { handleCopy,handlePaste } = useFabricCopyPaste(instance)
-    const { command, c, v } = useMagicKeys()
+    const { handleCopy, handlePaste } = useFabricCopyPaste(instance)
+    const { command_c, command_v } = useMagicKeys()
     watchEffect(() => {
       if (instance.value) {
-        if (command.value, c.value) {
+        if (command_c.value) {
           handleCopy()
         }
-        if (command.value, v.value) {
+        if (command_v.value) {
           handlePaste()
         }
       }
